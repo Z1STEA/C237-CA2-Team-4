@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
     session({
-        secret: process.env.SESSION_SECRET,
+        secret: 'skillsync-secret-key',
         resave: false,
         saveUninitialized: false
     })
