@@ -1,20 +1,381 @@
 <%- include("partials/header") %>
 
-<h2>Search Skills</h2>
+<!--
+=========================================================
+Part F - Search / Filter / Organise
+Developer: Wei Han
 
-<hr>
+Purpose:
+This page allows users to search, filter and organise
+portfolio records.
 
-<input
-    type="text"
-    class="form-control"
-    placeholder="Search skills...">
+Rendered by:
+routes/search.js
 
-<br>
+Required variables:
+- keyword
+- category
+- status
+- sort
+- results
 
-<button class="btn btn-primary">
+If this page displays an error, or the search
+does not return any data when records exist,
+check routes/search.js first to ensure the
+required variables are being passed correctly.
+=========================================================
+-->
 
-    Search
+<div class="container mt-4">
 
-</button>
+    <h2>Search, Filter & Organise Portfolio</h2>
+
+    <!--
+        Integration Note
+
+        This form submits the search request using the GET method.
+
+        If your project uses a different route,
+        change ONLY the action below.
+
+        Example:
+        action="/portfolio/search"
+
+        Keep the input names unchanged unless you also update
+        req.query in routes/search.js.
+    -->
+
+    <form action="/search" method="GET">
+    
+        <!--
+            Integration Note
+
+            The input name="keyword" is linked to:
+
+            req.query.keyword
+
+            inside routes/search.js.
+
+            If you rename this input, update search.js to match.
+            Otherwise, the keyword search will stop working.
+        -->
+
+        <!-- Keyword -->
+        <div class="mb-3">
+            <label class="form-label">Keyword</label>
+            <input
+                type="text"
+                class="form-control"
+                name="keyword"
+                placeholder="Search by Student Name or Title"
+                value="<%= keyword %>">
+        </div>
+
+        <!--
+            Integration Note
+
+            The option values below should match the values stored
+            in your database.
+
+            Current values:
+            - Skill
+            - Project
+            - Certification
+            - Achievement
+
+            If your project stores different category names,
+            replace ONLY the value and displayed text.
+
+            No other code changes are required.
+        -->
+
+        <!-- Category -->
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+
+            <select class="form-select" name="category">
+
+                <option value="" <%= category === "" ? "selected" : "" %>>
+                    All Categories
+                </option>
+
+                <option value="Skill" <%= category === "Skill" ? "selected" : "" %>>
+                    Skill
+                </option>
+
+                <option value="Project" <%= category === "Project" ? "selected" : "" %>>
+                    Project
+                </option>
+
+                <option value="Certification" <%= category === "Certification" ? "selected" : "" %>>
+                    Certification
+                </option>
+
+                <option value="Achievement" <%= category === "Achievement" ? "selected" : "" %>>
+                    Achievement
+                </option>
+
+            </select>
+
+        </div>
+
+        <!--
+            Integration Note
+
+            The option values below should match the values stored
+            in your database.
+
+            Current values:
+            - Pending
+            - Verified
+
+            If your project uses different status values
+            (e.g. Approved / Rejected or Active / Inactive),
+            replace ONLY the option values below.
+
+            The HTML structure does not need to be changed.
+        -->
+
+        <!-- Status -->
+        <div class="mb-3">
+            <label class="form-label">Status</label>
+
+            <select class="form-select" name="status">
+
+                <option value="" <%= status === "" ? "selected" : "" %>>
+                    All Status
+                </option>
+
+                <option value="Pending" <%= status === "Pending" ? "selected" : "" %>>
+                    Pending
+                </option>
+
+                <option value="Verified" <%= status === "Verified" ? "selected" : "" %>>
+                    Verified
+                </option>
+
+            </select>
+
+        </div>
+
+        <!--
+            Integration Note
+
+            Each sort option below matches a sorting condition
+            inside routes/search.js.
+
+            If you rename, add or remove any option value,
+            remember to update the corresponding sorting logic
+            inside search.js.
+
+            Both files must use the same values.
+        -->
+
+        <!-- Sort -->
+        <div class="mb-3">
+            <label class="form-label">Sort By</label>
+
+            <select class="form-select" name="sort">
+
+                <option value="newest" <%= sort === "newest" ? "selected" : "" %>>
+                    Newest First
+                </option>
+
+                <option value="oldest" <%= sort === "oldest" ? "selected" : "" %>>
+                    Oldest First
+                </option>
+
+                <option value="titleAZ" <%= sort === "titleAZ" ? "selected" : "" %>>
+                    Title (A-Z)
+                </option>
+
+                <option value="titleZA" <%= sort === "titleZA" ? "selected" : "" %>>
+                    Title (Z-A)
+                </option>
+
+                <option value="studentAZ" <%= sort === "studentAZ" ? "selected" : "" %>>
+                    Student Name (A-Z)
+                </option>
+
+                <option value="studentZA" <%= sort === "studentZA" ? "selected" : "" %>>
+                    Student Name (Z-A)
+                </option>
+
+                <option value="category" <%= sort === "category" ? "selected" : "" %>>
+                    Category
+                </option>
+
+                <option value="status" <%= sort === "status" ? "selected" : "" %>>
+                    Status
+                </option>
+
+            </select>
+
+        </div>
+
+        <button class="btn btn-primary">
+            Search
+        </button>
+
+        <!--
+            Integration Note
+
+            The Reset button reloads the page without
+            any search parameters, clearing all filters.
+
+            If your search route changes,
+            update ONLY the href value below.
+        -->
+
+        <a href="/search" class="btn btn-secondary">
+            Reset
+        </a>
+
+    </form>
+
+    <hr>
+
+    <!--
+        Integration Note
+
+        The search results are displayed only when
+        the database returns one or more records.
+
+        If no records are returned,
+        the "No portfolio records found" message
+        will be shown instead.
+    -->
+
+    <% if(results.length > 0){ %>
+
+        <!--
+            Integration Note
+
+            The table below displays records returned from
+            the portfolio database table.
+
+            Current database fields used:
+            - portfolioId
+            - studentName
+            - title
+            - category
+            - status
+            - createdAt
+
+            If your database uses different column names,
+            replace ONLY the field names inside the EJS tags.
+
+            Keep the HTML table structure unchanged.
+        -->
+
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-dark">
+
+            <tr>
+                <th>ID</th>
+                <th>Student Name</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Created</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+                <% results.forEach(item => { %>
+
+                <tr>
+
+                    <td><%= item.portfolioId %></td>
+
+                    <td><%= item.studentName %></td>
+
+                    <td><%= item.title %></td>
+
+                    <td><%= item.category %></td>
+
+                    <!--
+                        Integration Note
+
+                        The badge colour depends on the status value.
+
+                        Current mapping:
+                        Verified = Green
+                        Pending = Yellow
+
+                        If your project uses different status values,
+                        update the condition and badge text below.
+
+                        The Bootstrap badge classes can also be changed
+                        to match your project's design.
+                    -->
+
+                    <td>
+
+                        <% if(item.status === "Verified"){ %>
+
+                            <span class="badge bg-success">
+                                Verified
+                            </span>
+
+                        <% } else { %>
+
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+
+                        <% } %>
+
+                    </td>
+
+                    <!--
+                        Integration Note
+
+                        The createdAt field is formatted into a readable date.
+
+                        If your database stores the date in another column,
+                        replace ONLY "createdAt" below.
+
+                        Example:
+                        created_date
+                        createdOn
+                        uploadDate
+                    -->
+
+                    <td>
+                        <%= new Date(item.createdAt).toLocaleDateString() %>
+                    </td>
+
+                </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+
+    <% } else { %>
+
+        <!--
+            Integration Note
+
+            This message is shown only when the search
+            returns zero matching records.
+
+            You may customise the wording or styling
+            without affecting the search functionality.
+        -->            
+
+        <div class="alert alert-warning">
+            No portfolio records found.
+        </div>
+
+    <% } %>
+
+</div>
 
 <%- include("partials/footer") %>
