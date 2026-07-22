@@ -1,23 +1,80 @@
 <%- include("partials/header") %>
 
-<h2>Dashboard</h2>
+<main class="dashboard-page">
+    <section class="dashboard-hero">
+        <div>
+            <p class="eyebrow">Student dashboard</p>
+            <h1>Welcome back, <%= user.name || "Student" %>.</h1>
+            <p class="dashboard-subtitle">Keep your skills, certifications and achievements moving forward.</p>
+        </div>
+        <a class="btn btn-light dashboard-add" href="/addSkill">
+            <span aria-hidden="true">+</span> Add new skill
+        </a>
+    </section>
 
-<hr>
+    <section class="dashboard-stats" aria-label="Portfolio summary">
+        <article class="stat-card stat-card-featured">
+            <div class="stat-icon" aria-hidden="true">&#9733;</div>
+            <div>
+                <span class="stat-value"><%= skills.length %></span>
+                <span class="stat-label">Skills tracked</span>
+            </div>
+        </article>
+        <article class="stat-card">
+            <div class="stat-icon" aria-hidden="true">&#10003;</div>
+            <div>
+                <span class="stat-value"><%= skills.filter(skill => skill.status === "Completed").length %></span>
+                <span class="stat-label">Completed</span>
+            </div>
+        </article>
+        <article class="stat-card">
+            <div class="stat-icon" aria-hidden="true">&#8599;</div>
+            <div>
+                <span class="stat-value"><%= skills.filter(skill => skill.status === "In Progress").length %></span>
+                <span class="stat-label">In progress</span>
+            </div>
+        </article>
+        <article class="stat-card">
+            <div class="stat-icon" aria-hidden="true">&#127942;</div>
+            <div>
+                <span class="stat-value"><%= skills.filter(skill => skill.certificate || skill.certification).length %></span>
+                <span class="stat-label">Certificates</span>
+            </div>
+        </article>
+    </section>
 
-<p>
+    <section class="skills-panel">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Your portfolio</p>
+                <h2>My skills</h2>
+            </div>
+            <a href="/search" class="dashboard-link">Search skills <span aria-hidden="true">&rarr;</span></a>
+        </div>
 
-    Welcome to your dashboard.
-
-</p>
-
-<div class="card">
-
-    <div class="card-body">
-
-        Dashboard content will be added here.
-
-    </div>
-
-</div>
+        <% if (skills.length === 0) { %>
+            <div class="dashboard-empty">
+                <div class="empty-mark" aria-hidden="true">&#9733;</div>
+                <h3>Your portfolio starts here</h3>
+                <p>Add your first skill and track your learning progress, projects and certifications in one place.</p>
+                <a class="btn btn-dark" href="/addSkill">Add your first skill</a>
+            </div>
+        <% } else { %>
+            <div class="skill-grid">
+                <% skills.forEach(skill => { %>
+                    <article class="skill-card">
+                        <div class="skill-card-top">
+                            <span class="skill-category"><%= skill.category || "General" %></span>
+                            <span class="skill-status"><%= skill.status || "Learning" %></span>
+                        </div>
+                        <h3><%= skill.name || skill.skill_name %></h3>
+                        <p><%= skill.description || "No description added yet." %></p>
+                        <a href="/editSkill?id=<%= skill.id %>">View details <span aria-hidden="true">&rarr;</span></a>
+                    </article>
+                <% }) %>
+            </div>
+        <% } %>
+    </section>
+</main>
 
 <%- include("partials/footer") %>
