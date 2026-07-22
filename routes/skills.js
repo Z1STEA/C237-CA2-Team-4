@@ -27,6 +27,8 @@ router.post("/addSkill", (req, res) => {
         dateStarted
     } = req.body;
 
+    const userId = req.session.user.id;
+
 
     // Validation
     if (!skillName || !category || !proficiencyLevel || !dateStarted) {
@@ -41,22 +43,23 @@ router.post("/addSkill", (req, res) => {
 
 
     const sql = `
-        INSERT INTO skills
-        (
-            skillName,
-            category,
-            category,
-            proficiencyLevel,
-            description,
-            dateStarted
-        )
-        VALUES (?, ?, ?, ?, ?)
-    `;
+    INSERT INTO skills
+    (
+        userId,
+        skillName,
+        category,
+        proficiencyLevel,
+        description,
+        dateStarted
+    )
+    VALUES (?, ?, ?, ?, ?, ?)
+`;
 
 
     db.query(
         sql,
         [
+            userId,
             skillName,
             category,
             proficiencyLevel,
