@@ -1,19 +1,29 @@
 const express = require("express");
 const router = express.Router();
+const db = require("../config/db");
+const isAuthenticated = require("../middleware/isAuthenticated");
 
-router.get("/dashboard", (req, res) => {
-    const user = req.session.user || {
-        name: "Student",
-        role: "student"
-    };
+router.get("/dashboard", isAuthenticated, (req, res) => {
+    const currentUser = req.session.user;
+    const isAdminUser = currentUser.role === "admin";
 
-    // The skills array is deliberately kept as the view's data contract.
-    // Replace this with rows from the skills table when the CRUD branch lands.
-    const skills = [];
+    const query = isAdminUser
+        ? "SELECT * FROM portfolio ORDER BY updatedAt DESC"
+        : "SELECT * FROM portfolio WHERE userId = ? ORDER BY updatedAt DESC";
 
-    res.render("dashboard", {
-        user,
-        skills
+    const queryValues = isAdminUser ? [] : [currentUser.id];
+
+    db.query(query, queryValues, (err, portfolioEntries) => {
+        if (err) {
+            console.error("Error loading dashboard entries:", err);
+            return res.status(500).send("Unable to load dashboard entries.");
+        }
+
+        res.render("dashboard", {
+            user: currentUser,
+            entries: portfolioEntries,
+            updated: req.query.updated === "1"
+        });
     });
 });
 
