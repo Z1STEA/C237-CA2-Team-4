@@ -16,6 +16,7 @@ const skillRoutes = require("./routes/skills");
 const editRoutes = require("./routes/edit");
 const deleteRoutes = require("./routes/delete");
 const searchRoutes = require("./routes/search");
+const adminRoutes = require("./routes/admin");
 
 // View Engine
 app.set("view engine", "ejs");
@@ -34,6 +35,11 @@ app.use(
     })
 );
 
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+});
+
 // Routes
 app.use("/", authRoutes);
 app.use("/", dashboardRoutes);
@@ -41,6 +47,7 @@ app.use("/", skillRoutes);
 app.use("/", editRoutes);
 app.use("/", deleteRoutes);
 app.use("/", searchRoutes);
+app.use("/", adminRoutes);
 
 // Home Page
 app.get("/", (req, res) => {

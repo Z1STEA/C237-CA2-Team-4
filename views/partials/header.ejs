@@ -71,6 +71,16 @@
 
                 </li>
 
+                <% if (user && user.role === "admin") { %>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="/admin/dashboard">Manage Submissions</a>
+
+                    </li>
+
+                <% } %>
+
                 <li class="nav-item">
 
                     <a

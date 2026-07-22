@@ -1,0 +1,77 @@
+<%- include("header") %>
+
+<h2>Manage Submissions</h2>
+
+<hr>
+
+<% if (submissions.length === 0) { %>
+
+    <p>No submissions found.</p>
+
+<% } else { %>
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered">
+
+            <thead>
+
+                <tr>
+
+                    <th>Student</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <% submissions.forEach(submission => { %>
+
+                    <tr>
+
+                        <td><%= submission.studentName %></td>
+                        <td><%= submission.title %></td>
+                        <td><%= submission.category %></td>
+                        <td><%= submission.description %></td>
+                        <td><%= submission.status %></td>
+                        <td>
+
+                            <% if (submission.status === "Pending") { %>
+
+                                <form action="/admin/portfolio/<%= submission.portfolioId %>/verify" method="POST">
+
+                                    <button class="btn btn-success btn-sm">
+
+                                        Verify
+
+                                    </button>
+
+                                </form>
+
+                            <% } else { %>
+
+                                Verified
+
+                            <% } %>
+
+                        </td>
+
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+<% } %>
+
+<%- include("footer") %>
