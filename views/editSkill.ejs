@@ -4,7 +4,17 @@
 
 <hr>
 
-<form>
+<% if (errors && errors.length > 0) { %>
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            <% errors.forEach((error) => { %>
+                <li><%= error %></li>
+            <% }) %>
+        </ul>
+    </div>
+<% } %>
+
+<form action="/editSkill?id=<%= skill.id %>" method="POST">
 
     <div class="mb-3">
 
@@ -12,15 +22,83 @@
 
         <input
             type="text"
-            class="form-control">
+            name="skillName"
+            class="form-control"
+            maxlength="100"
+            value="<%= skill.skillName || '' %>"
+            required>
 
     </div>
 
-    <button class="btn btn-warning">
+    <div class="mb-3">
+
+        <label>Category</label>
+
+        <input
+            type="text"
+            name="category"
+            class="form-control"
+            maxlength="50"
+            value="<%= skill.category || '' %>"
+            required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>Proficiency Level</label>
+
+        <select
+            name="proficiencyLevel"
+            class="form-select"
+            required>
+
+            <% proficiencyLevels.forEach((level) => { %>
+                <option value="<%= level %>" <%= skill.proficiencyLevel === level ? "selected" : "" %>>
+                    <%= level %>
+                </option>
+            <% }) %>
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>Description</label>
+
+        <textarea
+            name="description"
+            class="form-control"
+            maxlength="255"
+            rows="4"><%= skill.description || '' %></textarea>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>Date Started</label>
+
+        <input
+            type="date"
+            name="dateStarted"
+            class="form-control"
+            value="<%= skill.dateStarted ? new Date(skill.dateStarted).toISOString().split('T')[0] : '' %>"
+            required>
+
+    </div>
+
+    <button class="btn btn-warning" type="submit">
 
         Update Skill
 
     </button>
+
+    <a href="/dashboard" class="btn btn-secondary">
+
+        Cancel
+
+    </a>
 
 </form>
 
