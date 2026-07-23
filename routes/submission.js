@@ -2,27 +2,47 @@ const express = require("express");
 const router = express.Router();
 
 const db = require("../config/db");
+const multer = require("multer");
+
+
+// Image upload configuration
+const storage = multer.diskStorage({
+
+    destination: (req, file, cb) => {
+        cb(null, "/public/uploads/certificates");
+    },
+
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + "-" + file.originalname);
+    }
+
+});
+
+
+const upload = multer({
+    storage: storage
+});
 
 
 // Display submission page
-router.get("/addSubmission", (req,res)=>{
+router.get("/addSubmission", (req, res) => {
 
-    if(!req.session.user){
+    if (!req.session.user) {
         return res.redirect("/login");
     }
 
-
-    res.render("addSubmission",{
-        error:null
+    res.render("addSubmission", {
+        error: null,
+        formData: {}
     });
 
 });
 
 
-// Add submission
-router.post("/addSubmission",(req,res)=>{
+// Add portfolio submission
+router.post("/addSubmission", upload.single("certificate"), (req, res) => {
 
-    if(!req.session.user){
+    if (!req.session.user) {
         return res.redirect("/login");
     }
 
@@ -36,26 +56,28 @@ router.post("/addSubmission",(req,res)=>{
 
     const userId = req.session.user.id;
 
-    const studentName = req.session.user.name;
 
+    if (!title || !category) {
 
-    if(!title || !category){
-
-        return res.render("addSubmission",{
-            error:"Please fill in all required fields."
+        return res.render("addSubmission", {
+            error: "Please fill in all required fields.",
+            formData: req.body
         });
 
     }
+
+
+    const certificate = req.file ? req.file.filename : null;
 
 
     const sql = `
         INSERT INTO portfolio
         (
             userId,
-            studentName,
             title,
             category,
             description,
+            certificate,
             status
         )
         VALUES (?, ?, ?, ?, ?, ?)
@@ -66,31 +88,32 @@ router.post("/addSubmission",(req,res)=>{
         sql,
         [
             userId,
-            studentName,
             title,
             category,
             description,
+            certificate,
             "Pending"
         ],
+        (err, result) => {
 
-        (err,result)=>{
-
-            if(err){
+            if (err) {
 
                 console.log(err);
 
-                return res.render("addSubmission",{
-                    error:"Failed to submit."
+                return res.render("addSubmission", {
+                    error: "Failed to submit.",
+                    formData: req.body
                 });
 
             }
 
 
-            res.redirect("/");
+            console.log("Portfolio submission added");
+
+            res.redirect("/dashboard");
 
         }
     );
-
 
 });
 

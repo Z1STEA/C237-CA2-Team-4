@@ -1,10 +1,10 @@
 <%- include("partials/header") %>
 
-<h2>Add Submission</h2>
+<h2>Add Portfolio Submission</h2>
 
 <hr>
 
-<% if (error) { %>
+<% if(error){ %>
 
 <div class="alert alert-danger">
     <%= error %>
@@ -13,7 +13,8 @@
 <% } %>
 
 
-<form action="/addSubmission" method="POST">
+<form action="/addSubmission" method="POST" enctype="multipart/form-data">
+
 
     <div class="mb-3">
 
@@ -25,6 +26,7 @@
             type="text"
             name="title"
             class="form-control"
+            value="<%= formData.title || '' %>"
             required>
 
     </div>
@@ -75,7 +77,22 @@
         <textarea
             name="description"
             class="form-control"
-            rows="4"></textarea>
+            rows="4"><%= formData.description || "" %></textarea>
+
+    </div>
+
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Upload Certificate
+        </label>
+
+        <input
+            type="file"
+            name="certificate"
+            class="form-control"
+            accept="image/*">
 
     </div>
 
