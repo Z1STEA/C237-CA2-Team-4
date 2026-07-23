@@ -12,9 +12,15 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
             [user.id]
         );
 
+        const [submissions] = await db.promise().execute(
+            "SELECT portfolioId, title, category, description, status, createdAt FROM portfolio WHERE studentName = ? ORDER BY createdAt DESC",
+            [user.name]
+        );
+
         res.render("dashboard", {
             user,
-            skills
+            skills,
+            submissions
         });
     } catch (error) {
         console.error(error);
