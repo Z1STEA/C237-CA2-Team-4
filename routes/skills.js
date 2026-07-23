@@ -7,6 +7,10 @@ const db = require("../config/db");
 // Display Add Skill Page
 router.get("/addSkill", (req, res) => {
 
+    if (!req.session.user) {
+        return res.redirect("/login");
+    }
+
     res.render("addSkill", {
         error: null,
         success: null,
@@ -19,6 +23,10 @@ router.get("/addSkill", (req, res) => {
 // Add Skill
 router.post("/addSkill", (req, res) => {
 
+    if (!req.session.user) {
+        return res.redirect("/login");
+    }
+
     const {
         skillName,
         category,
@@ -27,10 +35,10 @@ router.post("/addSkill", (req, res) => {
         dateStarted
     } = req.body;
 
+
     const userId = req.session.user.id;
 
 
-    // Validation
     if (!skillName || !category || !proficiencyLevel || !dateStarted) {
 
         return res.render("addSkill", {
@@ -43,17 +51,17 @@ router.post("/addSkill", (req, res) => {
 
 
     const sql = `
-    INSERT INTO skills
-    (
-        userId,
-        skillName,
-        category,
-        proficiencyLevel,
-        description,
-        dateStarted
-    )
-    VALUES (?, ?, ?, ?, ?, ?)
-`;
+        INSERT INTO skills
+        (
+            userId,
+            skillName,
+            category,
+            proficiencyLevel,
+            description,
+            dateStarted
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
+    `;
 
 
     db.query(
