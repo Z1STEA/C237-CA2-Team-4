@@ -43,6 +43,35 @@
         </article>
     </section>
 
+    <section class="skills-panel" aria-labelledby="submission-status-heading">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Private to you</p>
+                <h2 id="submission-status-heading">My submission status</h2>
+            </div>
+        </div>
+
+        <% if (submissions.length === 0) { %>
+            <div class="dashboard-empty">
+                <h3>No portfolio submissions yet</h3>
+                <p>Your submission updates will appear here after you submit a portfolio entry.</p>
+            </div>
+        <% } else { %>
+            <div class="skill-grid">
+                <% submissions.forEach(submission => { %>
+                    <article class="skill-card">
+                        <div class="skill-card-top">
+                            <span class="skill-category"><%= submission.category || "General" %></span>
+                            <span class="skill-status"><%= submission.status || "Pending" %></span>
+                        </div>
+                        <h3><%= submission.title %></h3>
+                        <p><%= submission.description || "No description added yet." %></p>
+                    </article>
+                <% }) %>
+            </div>
+        <% } %>
+    </section>
+
     <section class="skills-panel">
         <div class="panel-heading">
             <div>
@@ -70,6 +99,9 @@
                         <h3><%= skill.name || skill.skill_name %></h3>
                         <p><%= skill.description || "No description added yet." %></p>
                         <a href="/editSkill?id=<%= skill.id %>">View details <span aria-hidden="true">&rarr;</span></a>
+                        <form action="/deleteSkill/<%= skill.id %>" method="POST" class="mt-3" onsubmit="return confirm('Are you sure you want to delete this skill?');">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                        </form>
                     </article>
                 <% }) %>
             </div>
