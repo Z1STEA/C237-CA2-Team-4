@@ -1,15 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const isAuthenticated = require("../middleware/isAuthenticated");
 
 const db = require("../config/db");
 
 
 // Display Add Skill Page
-router.get("/addSkill", (req, res) => {
-
-    if (!req.session.user) {
-        return res.redirect("/login");
-    }
+router.get("/addSkill", isAuthenticated, (req, res) => {
 
     res.render("addSkill", {
         error: null,
@@ -21,11 +18,7 @@ router.get("/addSkill", (req, res) => {
 
 
 // Add Skill
-router.post("/addSkill", (req, res) => {
-
-    if (!req.session.user) {
-        return res.redirect("/login");
-    }
+router.post("/addSkill", isAuthenticated, (req, res) => {
 
     const {
         skillName,

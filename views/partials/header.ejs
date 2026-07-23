@@ -106,29 +106,57 @@
 
                 <!-- End Part F Addition -->
 
-                <li class="nav-item">
+                <% if (user && user.role === "admin") { %>
 
-                    <a
-                        class="nav-link"
-                        href="/login">
+                    <li class="nav-item">
 
-                        Login
+                        <a class="nav-link" href="/admin/dashboard">Manage Submissions</a>
 
-                    </a>
+                    </li>
 
-                </li>
+                <% } %>
 
-                <li class="nav-item">
+                <% if (user) { %>
 
-                    <a
-                        class="nav-link"
-                        href="/register">
+                    <li class="nav-item">
 
-                        Register
+                        <a
+                            class="nav-link"
+                            href="/logout">
 
-                    </a>
+                            Logout
 
-                </li>
+                        </a>
+
+                    </li>
+
+                <% } else { %>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="/login">
+
+                            Login
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="/register">
+
+                            Register
+
+                        </a>
+
+                    </li>
+
+                <% } %>
 
             </ul>
 
