@@ -9,7 +9,7 @@ const multer = require("multer");
 const storage = multer.diskStorage({
 
     destination: (req, file, cb) => {
-        cb(null, "/public/uploads/certificates");
+        cb(null, "public/uploads/certificates");
     },
 
     filename: (req, file, cb) => {
@@ -71,16 +71,17 @@ router.post("/addSubmission", upload.single("certificate"), (req, res) => {
 
 
     const sql = `
-        INSERT INTO portfolio
-        (
-            userId,
-            title,
-            category,
-            description,
-            certificate,
-            status
-        )
-        VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO portfolio
+    (
+        userId,
+        studentName,
+        title,
+        category,
+        description,
+        certificate,
+        status
+    )
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
 
@@ -88,6 +89,7 @@ router.post("/addSubmission", upload.single("certificate"), (req, res) => {
         sql,
         [
             userId,
+            req.session.user.name,
             title,
             category,
             description,

@@ -17,6 +17,7 @@ const editRoutes = require("./routes/edit");
 const deleteRoutes = require("./routes/delete");
 const searchRoutes = require("./routes/search");
 const adminRoutes = require("./routes/admin");
+const submissionRoutes = require("./routes/submission");
 
 // View Engine
 app.set("view engine", "ejs");
@@ -48,6 +49,7 @@ app.use("/", editRoutes);
 app.use("/", deleteRoutes);
 app.use("/", searchRoutes);
 app.use("/", adminRoutes);
+app.use("/", submissionRoutes);
 
 // Home Page
 app.get("/", (req, res) => {
