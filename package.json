@@ -13,12 +13,22 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
     "ejs": "^3.1.10",
-    "express": "^5.1.0",
-    "express-session": "^1.18.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "multer": "^2.2.0",
-    "mysql2": "^3.14.3"
+    "mysql2": "^3.23.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caffeinatedclaw/C237-CA2-Team-4.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/caffeinatedclaw/C237-CA2-Team-4/issues"
+  },
+  "homepage": "https://github.com/caffeinatedclaw/C237-CA2-Team-4#readme"
 }

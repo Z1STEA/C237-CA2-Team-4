@@ -15,9 +15,9 @@
             <div class="card-body">
 
                 <% if (error) { %>
-                <div class="alert alert-danger">
-                    <%= error %>
-                </div>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
                 <% } %>
 
                 <form action="/login" method="POST">
@@ -29,6 +29,7 @@
                         <input
                             type="email"
                             name="email"
+                            value="<%= email || '' %>"
                             class="form-control"
                             value="<%= email || '' %>"
                             required>
