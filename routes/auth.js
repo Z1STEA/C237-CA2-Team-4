@@ -143,63 +143,6 @@ router.post("/register", (req, res) => {
     });
 });
 
-router.post("/login", (req, res) => {
-    const email = (req.body.email || "").trim().toLowerCase();
-    const password = req.body.password || "";
-
-    if (!email || !password) {
-        return res.status(400).render("login", {
-            error: "Please enter both email and password.",
-            email
-        });
-    }
-
-    db.query("SELECT * FROM users WHERE email = ? LIMIT 1", [email], (err, results) => {
-        if (err) {
-            console.error("Error finding user:", err);
-            return res.status(500).render("login", {
-                error: "Unable to login right now.",
-                email
-            });
-        }
-
-        if (results.length === 0) {
-            return res.status(401).render("login", {
-                error: "Invalid email or password.",
-                email
-            });
-        }
-
-        const user = results[0];
-
-        bcrypt.compare(password, user.password, (compareErr, isMatch) => {
-            if (compareErr) {
-                console.error("Error checking password:", compareErr);
-                return res.status(500).render("login", {
-                    error: "Unable to login right now.",
-                    email
-                });
-            }
-
-            if (!isMatch) {
-                return res.status(401).render("login", {
-                    error: "Invalid email or password.",
-                    email
-                });
-            }
-
-            req.session.user = {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                role: user.role
-            };
-
-            res.redirect("/dashboard");
-        });
-    });
-});
-
 router.get("/logout", (req, res) => {
     req.session.destroy(() => {
         res.redirect("/login");
