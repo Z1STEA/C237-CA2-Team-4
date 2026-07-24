@@ -18,14 +18,24 @@
         </div>
     </section>
 
-    <section class="dashboard-stats" aria-label="Portfolio summary">
+    <section class="dashboard-stats" aria-label="Dashboard summary">
+
         <article class="stat-card stat-card-featured">
             <div class="stat-icon" aria-hidden="true">&#9733;</div>
             <div>
-                <span class="stat-value"><%= submissions.length %></span>
-                <span class="stat-label">Entries tracked</span>
+                <span class="stat-value"><%= skills.length %></span>
+                <span class="stat-label">Skills</span>
             </div>
         </article>
+
+        <article class="stat-card">
+            <div class="stat-icon" aria-hidden="true">&#128193;</div>
+            <div>
+                <span class="stat-value"><%= submissions.length %></span>
+                <span class="stat-label">Portfolio Entries</span>
+            </div>
+        </article>
+
         <article class="stat-card">
             <div class="stat-icon" aria-hidden="true">&#10003;</div>
             <div>
@@ -33,6 +43,7 @@
                 <span class="stat-label">Verified</span>
             </div>
         </article>
+
         <article class="stat-card">
             <div class="stat-icon" aria-hidden="true">&#8599;</div>
             <div>
@@ -40,13 +51,7 @@
                 <span class="stat-label">Pending</span>
             </div>
         </article>
-        <article class="stat-card">
-            <div class="stat-icon" aria-hidden="true">&#127942;</div>
-            <div>
-                <span class="stat-value"><%= submissions.filter(submission => submission.category === "Certification").length %></span>
-                <span class="stat-label">Certificates</span>
-            </div>
-        </article>
+
     </section>
 
     <!-- My Skills -->
@@ -117,6 +122,13 @@
 
     <!-- My Submission Status -->
     <section class="skills-panel" aria-labelledby="submission-status-heading">
+
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Private to you</p>
+                <h2 id="submission-status-heading">My Submission Status</h2>
+            </div>
+        </div>
 
         <% if (submissions.length === 0) { %>
             <div class="dashboard-empty">
