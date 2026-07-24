@@ -6,7 +6,10 @@ const db = require("../config/db");
 const router = express.Router();
 
 router.get("/login", (req, res) => {
-    res.render("login");
+    res.render("login", {
+        error: null,
+        email: ""
+    });
 });
 
 router.post("/login", (req, res) => {
@@ -14,7 +17,10 @@ router.post("/login", (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.send("Please enter email and password.");
+        return res.render("login", {
+            error: "Please enter email and password.",
+            email
+        });
     }
 
     db.query(
@@ -24,11 +30,17 @@ router.post("/login", (req, res) => {
 
             if (err) {
                 console.error(err);
-                return res.send("Database error.");
+                return res.render("login", {
+                    error: "Database error.",
+                    email
+                });
             }
 
             if (results.length === 0) {
-                return res.send("Incorrect email or password.");
+                return res.render("login", {
+                    error: "Incorrect email or password.",
+                    email
+                });
             }
 
             const user = results[0];
@@ -39,7 +51,10 @@ router.post("/login", (req, res) => {
             );
 
             if (!passwordMatches) {
-                return res.send("Incorrect email or password.");
+                return res.render("login", {
+                    error: "Incorrect email or password.",
+                    email
+                });
             }
 
             req.session.user = {

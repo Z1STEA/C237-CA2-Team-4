@@ -5,29 +5,20 @@
 <hr>
 
 <% if (error) { %>
-
 <div class="alert alert-danger">
     <%= error %>
 </div>
-
 <% } %>
 
-
 <% if (success) { %>
-
 <div class="alert alert-success">
     <%= success %>
 </div>
-
 <% } %>
-
-
 
 <form action="/addSkill" method="POST">
 
-
     <div class="mb-3">
-
         <label for="skillName" class="form-label">
             Skill Name
         </label>
@@ -39,17 +30,13 @@
             class="form-control"
             value="<%= formData.skillName || '' %>"
             required>
-
     </div>
 
 
-
     <div class="mb-3">
-
         <label for="category" class="form-label">
             Category
         </label>
-
 
         <select
             id="category"
@@ -57,53 +44,60 @@
             class="form-select"
             required>
 
-
-            <option value="">
-                Select Category
-            </option>
-
+            <option value="">Select Category</option>
 
             <option value="Technology"
             <%= formData.category === "Technology" ? "selected" : "" %>>
                 Technology
             </option>
 
-
             <option value="Design"
             <%= formData.category === "Design" ? "selected" : "" %>>
                 Design
             </option>
-
 
             <option value="Soft Skills"
             <%= formData.category === "Soft Skills" ? "selected" : "" %>>
                 Soft Skills
             </option>
 
-
             <option value="Language"
             <%= formData.category === "Language" ? "selected" : "" %>>
                 Language
             </option>
-
 
             <option value="Sports"
             <%= formData.category === "Sports" ? "selected" : "" %>>
                 Sports
             </option>
 
-
             <option value="Others"
             <%= formData.category === "Others" ? "selected" : "" %>>
                 Others
             </option>
 
-
         </select>
-
     </div>
 
 
+    <div
+        class="mb-3"
+        id="otherDescriptionDiv"
+        style="<%= formData.category === 'Others' ? '' : 'display:none;' %>">
+
+        <label for="otherDescription" class="form-label">
+            Specify Other Category
+        </label>
+
+        <input
+            type="text"
+            id="otherDescription"
+            name="otherDescription"
+            class="form-control"
+            value="<%= formData.otherDescription || '' %>"
+            placeholder="Enter category">
+
+    </div>
 
 
     <div class="mb-3">
@@ -112,36 +106,28 @@
             Proficiency Level
         </label>
 
-
         <select
             id="proficiencyLevel"
             name="proficiencyLevel"
             class="form-select"
             required>
 
-
-            <option value="">
-                Select Level
-            </option>
-
+            <option value="">Select Level</option>
 
             <option value="Beginner"
             <%= formData.proficiencyLevel === "Beginner" ? "selected" : "" %>>
                 Beginner
             </option>
 
-
             <option value="Intermediate"
             <%= formData.proficiencyLevel === "Intermediate" ? "selected" : "" %>>
                 Intermediate
             </option>
 
-
             <option value="Advanced"
             <%= formData.proficiencyLevel === "Advanced" ? "selected" : "" %>>
                 Advanced
             </option>
-
 
         </select>
 
@@ -154,14 +140,12 @@
             Description
         </label>
 
-
         <textarea
             id="description"
             name="description"
             class="form-control"
             rows="4"
             placeholder="Describe the skill"><%= formData.description || "" %></textarea>
-
 
     </div>
 
@@ -172,7 +156,6 @@
             Date Started
         </label>
 
-
         <input
             type="date"
             id="dateStarted"
@@ -181,8 +164,8 @@
             value="<%= formData.dateStarted || '' %>"
             required>
 
-
     </div>
+
 
     <button type="submit" class="btn btn-success">
         Add Skill
@@ -190,5 +173,33 @@
 
 </form>
 
+<script>
+
+const category = document.getElementById("category");
+const otherDiv = document.getElementById("otherDescriptionDiv");
+const otherInput = document.getElementById("otherDescription");
+
+function toggleOther() {
+
+    if (category.value === "Others") {
+
+        otherDiv.style.display = "block";
+        otherInput.required = true;
+
+    } else {
+
+        otherDiv.style.display = "none";
+        otherInput.required = false;
+        otherInput.value = "";
+
+    }
+
+}
+
+category.addEventListener("change", toggleOther);
+
+toggleOther();
+
+</script>
 
 <%- include("partials/footer") %>

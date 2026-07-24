@@ -16,13 +16,13 @@ router.get("/addSkill", isAuthenticated, (req, res) => {
 
 });
 
-
 // Add Skill
 router.post("/addSkill", isAuthenticated, (req, res) => {
 
     const {
         skillName,
         category,
+        otherDescription,
         proficiencyLevel,
         description,
         dateStarted
@@ -31,6 +31,7 @@ router.post("/addSkill", isAuthenticated, (req, res) => {
 
     const userId = req.session.user.id;
 
+    console.log("User ID:", userId);
 
     if (!skillName || !category || !proficiencyLevel || !dateStarted) {
 
@@ -49,11 +50,12 @@ router.post("/addSkill", isAuthenticated, (req, res) => {
             userId,
             skillName,
             category,
+            otherDescription,
             proficiencyLevel,
             description,
             dateStarted
         )
-        VALUES (?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
 
@@ -63,6 +65,7 @@ router.post("/addSkill", isAuthenticated, (req, res) => {
             userId,
             skillName,
             category,
+            category === "Others" ? otherDescription : null,
             proficiencyLevel,
             description,
             dateStarted
@@ -71,8 +74,6 @@ router.post("/addSkill", isAuthenticated, (req, res) => {
         (err, result) => {
 
             if (err) {
-
-                console.log(err);
 
                 return res.render("addSkill", {
                     error: "Failed to add skill.",
@@ -85,7 +86,11 @@ router.post("/addSkill", isAuthenticated, (req, res) => {
 
             console.log("Skill added successfully");
 
-            res.redirect("/");
+            return res.render("addSkill", {
+                error: null,
+                success: "Skill added successfully!",
+                formData: {}
+            });
 
         }
     );
