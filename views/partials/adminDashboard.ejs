@@ -54,9 +54,19 @@
 
                                 </form>
 
+                                <form action="/admin/portfolio/<%= submission.portfolioId %>/reject" method="POST" class="mt-2">
+
+                                    <button class="btn btn-danger btn-sm">
+
+                                        Reject
+
+                                    </button>
+
+                                </form>
+
                             <% } else { %>
 
-                                Verified
+                                <%= submission.status %>
 
                             <% } %>
 

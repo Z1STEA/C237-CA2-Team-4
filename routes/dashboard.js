@@ -7,69 +7,13 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
     const user = req.session.user;
 
     try {
-        let skills;
-        let submissions;
-
-        if (user.role === "admin") {
-
-            [skills] = await db.promise().execute(`
-                SELECT
-                    id,
-                    skillName AS skill_name,
-                    category,
-                    proficiencyLevel AS status,
-                    description,
-                    dateStarted
-                FROM skills
-                ORDER BY id DESC
-            `);
-
-            [submissions] = await db.promise().execute(`
-                SELECT
-                    portfolioId,
-                    title,
-                    category,
-                    description,
-                    status,
-                    createdAt,
-                    studentName
-                FROM portfolio
-                ORDER BY createdAt DESC
-            `);
-
-        } else {
-
-            [skills] = await db.promise().execute(`
-                SELECT
-                    id,
-                    skillName AS skill_name,
-                    category,
-                    proficiencyLevel AS status,
-                    description,
-                    dateStarted
-                FROM skills
-                WHERE userId = ?
-                ORDER BY id DESC
-            `, [user.id]);
-
-            [submissions] = await db.promise().execute(`
-                SELECT
-                    portfolioId,
-                    title,
-                    category,
-                    description,
-                    status,
-                    createdAt
-                FROM portfolio
-                WHERE studentName = ?
-                ORDER BY createdAt DESC
-            `, [user.name]);
-
-        }
+        const [submissions] = await db.promise().execute(
+            "SELECT portfolioId, title, category, description, status, createdAt FROM portfolio WHERE userId = ? ORDER BY createdAt DESC",
+            [user.id]
+        );
 
         res.render("dashboard", {
             user,
-            skills,
             submissions
         });
 

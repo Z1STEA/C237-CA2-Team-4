@@ -87,14 +87,14 @@
         <% } else { %>
 
             <div>
-                <span class="badge <%= entry.status === 'Verified' ? 'bg-success' : 'bg-secondary' %>">
+                <span class="badge <%= entry.status === 'Verified' ? 'bg-success' : entry.status === 'Rejected' ? 'bg-danger' : 'bg-secondary' %>">
                     <%= entry.status %>
                 </span>
             </div>
 
-            <% if (entry.status === "Verified") { %>
+            <% if (entry.status === "Verified" || entry.status === "Rejected") { %>
                 <small class="text-muted d-block mt-1">
-                    Editing this entry will reset it to "Pending" until an admin re-verifies it.
+                    Editing this entry will reset it to "Pending" until an admin reviews it again.
                 </small>
             <% } %>
 

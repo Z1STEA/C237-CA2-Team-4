@@ -30,7 +30,7 @@ CREATE TABLE portfolio (
     title VARCHAR(150) NOT NULL,
     category ENUM('Skill', 'Project', 'Certification', 'Achievement') NOT NULL,
     description TEXT,
-    status ENUM('Pending', 'Verified') DEFAULT 'Pending',
+    status ENUM('Pending', 'Verified', 'Rejected') DEFAULT 'Pending',
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_portfolio_user FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
