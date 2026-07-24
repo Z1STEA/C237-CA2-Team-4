@@ -49,13 +49,74 @@
         </article>
     </section>
 
-    <section class="skills-panel" aria-labelledby="submission-status-heading">
+    <!-- My Skills -->
+    <section class="skills-panel" aria-labelledby="skills-heading">
+
         <div class="panel-heading">
             <div>
-                <p class="eyebrow">Private to you</p>
-                <h2 id="submission-status-heading">My submission status</h2>
+                <p class="eyebrow">Your skills</p>
+                <h2 id="skills-heading">My Skills</h2>
             </div>
+
+            <a href="/search" class="dashboard-link">
+                Search skills →
+            </a>
         </div>
+
+        <% if (skills.length === 0) { %>
+
+            <div class="dashboard-empty">
+                <h3>No skills added yet</h3>
+                <p>Add your first skill to build your portfolio.</p>
+
+                <a class="btn btn-primary" href="/addSkill">
+                    Add Skill
+                </a>
+            </div>
+
+        <% } else { %>
+
+            <div class="skill-grid">
+
+                <% skills.forEach(skill => { %>
+
+                    <article class="skill-card">
+
+                        <div class="skill-card-top">
+                            <span class="skill-category">
+                                <%= skill.category %>
+                            </span>
+
+                            <span class="skill-status">
+                                <%= skill.status %>
+                            </span>
+                        </div>
+
+                        <h3><%= skill.skill_name %></h3>
+
+                        <p><%= skill.description || "No description." %></p>
+
+                        <p class="text-muted">
+                            Started:
+                            <%= new Date(skill.dateStarted).toLocaleDateString() %>
+                        </p>
+
+                        <a href="/editSkill?id=<%= skill.id %>">
+                            View details →
+                        </a>
+
+                    </article>
+
+                <% }) %>
+
+            </div>
+
+        <% } %>
+
+    </section>
+
+    <!-- My Submission Status -->
+    <section class="skills-panel" aria-labelledby="submission-status-heading">
 
         <% if (submissions.length === 0) { %>
             <div class="dashboard-empty">
