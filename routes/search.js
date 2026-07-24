@@ -41,7 +41,7 @@ Example:
 // Explanation:
 // Import the shared database connection.
 const db = require("../config/db");
-
+const isAuthenticated = require("../middleware/isAuthenticated");
 /*
 Integration Note
 
@@ -59,7 +59,9 @@ merge the logic instead of creating a duplicate.
 
 // Explanation:
 // Handle GET requests for the Search page.
-router.get("/search", (req, res) => {
+router.get("/search", isAuthenticated, (req, res) => {
+
+    const user = req.session.user;
 
     /*
     Integration Note
@@ -99,6 +101,10 @@ router.get("/search", (req, res) => {
     // Store values that replace the ? placeholders safely.
     let values = [];
 
+    if (user.role !== "admin") {
+        conditions.push("studentName = ?");
+        values.push(user.name);
+    }
     /*
     Integration Note
 
