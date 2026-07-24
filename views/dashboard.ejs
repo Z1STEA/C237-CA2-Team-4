@@ -7,9 +7,15 @@
             <h1>Welcome back, <%= user.name || "Student" %>.</h1>
             <p class="dashboard-subtitle">Keep your skills, certifications and achievements moving forward.</p>
         </div>
-        <a class="btn btn-light dashboard-add" href="/addSubmission">
-            <span aria-hidden="true">+</span> Add submission
-        </a>
+        <div class="d-flex gap-2">
+            <a class="btn btn-primary" href="/addSkill">
+                <span aria-hidden="true">+</span> Add Skill
+            </a>
+
+            <a class="btn btn-light dashboard-add" href="/addSubmission">
+                <span aria-hidden="true">+</span> Add Submission
+            </a>
+        </div>
     </section>
 
     <section class="dashboard-stats" aria-label="Portfolio summary">
